@@ -12,25 +12,30 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
-        Grid(viewModel.cards) { card in
-            CardView(card: card)
-                .aspectRatio(2/3, contentMode: .fit)
-                .onTapGesture {
-                    self.viewModel.choose(card: card)
-                }
-        .padding(5)
+        VStack {
+            Text(self.viewModel.Theme.Name)
+                .font(Font.largeTitle)
+                .foregroundColor(Color.green)
+            Grid(viewModel.cards) { card in
+                CardView(card: card)
+                    .aspectRatio(2/3, contentMode: .fit)
+                    .onTapGesture {
+                        self.viewModel.choose(card: card)
+                    }
+            .padding(5)
+            }
+                .foregroundColor(self.viewModel.Theme.Color)
+                .padding()
         }
-            .foregroundColor(Color.orange)
-            .padding()
     }
 }
 
-struct CardView: View {
+struct CardView: View  {
     let cornerRadius: CGFloat = 10.0
     let lineWidth: CGFloat = 3
     let fontScale: CGFloat = 0.75
     
-    var card: MemoryGame<String>.Card
+    var card: MemoryGame.Card
     
     var body: some View {
         GeometryReader { geometry in
@@ -56,11 +61,13 @@ struct CardView: View {
     func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * fontScale
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let petContent: [String] = ["🐈", "🐕", "🐹", "🐇", "🦜", "🐍", "🦎", "🕷", "🐷", "🐁"]
+    static let PetTheme = MemoryGameTheme(color: Color.pink, name: "Pets", cardContent: petContent)
+    
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame(theme: PetTheme))
     }
 }

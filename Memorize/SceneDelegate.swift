@@ -20,8 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let game = EmojiMemoryGame()
-        let contentView = EmojiMemoryGameView(viewModel: game)
+        
+        let contentView = ThemeView(Themes: memoryGameThemes())
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -30,6 +30,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+    }
+    
+    func memoryGameThemes() -> [MemoryGameTheme] {
+        let halloweenContent: [String] = ["👻", "🎃", "🕷", "💀", "🧙‍♀️", "👹", "👽", "👮‍♀️", "🧟‍♂️", "🧜‍♀️", "🧚‍♀️", "🧞‍♂️"]
+        let petContent: [String] = ["🐈", "🐕", "🐹", "🐇", "🦜", "🐍", "🦎", "🕷", "🐷", "🐁"]
+        let christmasContent: [String] = ["🎅🏻", "🎄", "🌟", "🎁", "🚂", "🧸", "🎉"]
+        let flowerContent: [String] = ["🌹", "🌷", "🌺", "🌻", "🌼", "🥀", "💐", "🌸"]
+        
+        var themes = [
+            MemoryGameTheme(color: Color.pink, name: "Flowers", cardContent: flowerContent),
+            MemoryGameTheme(color: Color.blue, name: "Pets", cardContent: petContent),
+            MemoryGameTheme(color: Color.orange, name: "Halloween", cardContent: halloweenContent),
+            MemoryGameTheme(color: Color.red, name: "Christmas", cardContent: christmasContent),
+        ]
+        
+        let randomTheme = themes[Int.random(in: 1..<themes.count)]
+        
+        themes.append(
+            MemoryGameTheme(
+                color: Color.green,
+                name: "New Game",
+                cardContent: randomTheme.Content
+            )
+        )
+        
+        return themes
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
